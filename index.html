@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jonathan Gabriel — Desenvolvedor & Tradutor</title>
     
-    <!-- Fonte Profissional -->
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -30,7 +27,6 @@
             --text-muted: #71717a;
             --accent: #3b82f6;
             --accent-soft: rgba(59, 130, 246, 0.1);
-            --gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
         }
 
         html {
@@ -43,30 +39,40 @@
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            transition: all 0.5s ease;
+            overflow-x: hidden;
         }
 
-        /* Noise Texture Overlay */
-        body::before {
-            content: '';
+        #starsCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.03;
+            z-index: 0;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            z-index: 1000;
         }
 
-        /* Container */
+        #retroCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
         .container {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 80px 24px;
-        }
+			max-width: 680px;
+			margin: 0 auto;
+			padding: 150px 24px 150px 24px;  /* AUMENTEI O TOPO DE 80px PARA 120px */
+			position: relative;
+			z-index: 10;
+		}
 
-        /* Header/Hero */
         .hero {
             margin-bottom: 64px;
         }
@@ -75,10 +81,11 @@
             width: 96px;
             height: 96px;
             border-radius: 50%;
+			margin-top: 130px
             margin-bottom: 24px;
             border: 2px solid var(--border);
             object-fit: cover;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .avatar:hover {
@@ -91,6 +98,7 @@
             font-weight: 700;
             letter-spacing: -0.5px;
             margin-bottom: 8px;
+            transition: all 0.5s ease;
         }
 
         .title {
@@ -98,10 +106,12 @@
             color: var(--text-secondary);
             font-weight: 400;
             margin-bottom: 16px;
+            transition: all 0.5s ease;
         }
 
         .title span {
             color: var(--accent);
+            transition: all 0.5s ease;
         }
 
         .bio {
@@ -111,7 +121,6 @@
             max-width: 520px;
         }
 
-        /* Status Badge */
         .status {
             display: inline-flex;
             align-items: center;
@@ -123,6 +132,7 @@
             font-size: 14px;
             color: var(--text-secondary);
             margin-bottom: 24px;
+            transition: all 0.5s ease;
         }
 
         .status-dot {
@@ -138,7 +148,15 @@
             50% { opacity: 0.5; }
         }
 
-        /* Sections */
+        .location {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
         .section {
             margin-bottom: 48px;
         }
@@ -150,9 +168,54 @@
             letter-spacing: 1.5px;
             color: var(--text-muted);
             margin-bottom: 20px;
+            transition: all 0.5s ease;
         }
 
-        /* Project Cards */
+        .currently-card {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .currently-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .currently-image {
+            width: 200px;
+            height: auto;
+            max-height: 300px;
+            border-radius: 8px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .currently-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .currently-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .currently-text {
+            font-size: 16px;
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
         .projects {
             display: flex;
             flex-direction: column;
@@ -169,7 +232,7 @@
             border-radius: 12px;
             text-decoration: none;
             color: inherit;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .project-card:hover {
@@ -188,12 +251,6 @@
             justify-content: center;
             font-size: 24px;
             flex-shrink: 0;
-        }
-
-        .project-icon img {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
         }
 
         .project-info {
@@ -217,7 +274,7 @@
 
         .project-arrow {
             color: var(--text-muted);
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .project-card:hover .project-arrow {
@@ -225,7 +282,6 @@
             color: var(--accent);
         }
 
-        /* Skills */
         .skills {
             display: flex;
             flex-wrap: wrap;
@@ -239,7 +295,7 @@
             border-radius: 8px;
             font-size: 14px;
             color: var(--text-secondary);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .skill:hover {
@@ -247,7 +303,74 @@
             color: var(--accent);
         }
 
-        /* Social Links */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover,
+        .faq-item.active {
+            border-color: var(--accent);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 20px;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-icon {
+            font-size: 18px;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: var(--accent);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 20px 20px 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
         .social-links {
             display: flex;
             gap: 12px;
@@ -266,7 +389,7 @@
             color: var(--text-primary);
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .social-link:hover {
@@ -279,7 +402,6 @@
             height: 18px;
         }
 
-        /* Footer */
         .footer {
             padding-top: 48px;
             border-top: 1px solid var(--border);
@@ -294,24 +416,34 @@
         .footer-text a {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.2s;
+            transition: color 0.3s;
         }
 
         .footer-text a:hover {
             color: var(--accent);
         }
 
-        /* Location */
-        .location {
+        .retro-toggle {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 14px;
+            gap: 8px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             color: var(--text-muted);
-            margin-bottom: 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        /* Animations */
+        .retro-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
         .fade-in {
             opacity: 0;
             transform: translateY(20px);
@@ -323,6 +455,8 @@
         .fade-in:nth-child(3) { animation-delay: 0.3s; }
         .fade-in:nth-child(4) { animation-delay: 0.4s; }
         .fade-in:nth-child(5) { animation-delay: 0.5s; }
+        .fade-in:nth-child(6) { animation-delay: 0.6s; }
+        .fade-in:nth-child(7) { animation-delay: 0.7s; }
 
         @keyframes fadeIn {
             to {
@@ -331,65 +465,198 @@
             }
         }
 
-        /* Responsive */
+        body.retro-mode {
+            background: #000 !important;
+        }
+
+        body.retro-mode #starsCanvas {
+            opacity: 0;
+        }
+
+        body.retro-mode #retroCanvas {
+            opacity: 1;
+        }
+
+        body.retro-mode * {
+            font-family: 'Rajdhani', sans-serif !important;
+        }
+
+        body.retro-mode .name,
+        body.retro-mode .section-title {
+            font-family: 'Orbitron', sans-serif !important;
+        }
+
+        body.retro-mode .name {
+            background: linear-gradient(90deg, #ff0080, #00d4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 128, 0.5));
+            animation: glowPulse 2s infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 0, 128, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 0, 128, 0.8)) drop-shadow(0 0 60px rgba(0, 212, 255, 0.5)); }
+        }
+
+        body.retro-mode .section-title {
+            color: #ff0080 !important;
+            text-shadow: 0 0 10px #ff0080;
+            letter-spacing: 3px;
+        }
+
+        body.retro-mode .title span {
+            color: #00d4ff !important;
+            text-shadow: 0 0 10px #00d4ff;
+        }
+
+        body.retro-mode .status {
+            border-color: #00ff88 !important;
+            color: #00ff88 !important;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.1) !important;
+        }
+
+        body.retro-mode .status-dot {
+            background: #00ff88 !important;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        body.retro-mode .avatar {
+            border-color: #ff0080 !important;
+            box-shadow: 0 0 30px #ff0080 !important;
+        }
+
+        body.retro-mode .project-card,
+        body.retro-mode .currently-card,
+        body.retro-mode .faq-item,
+        body.retro-mode .social-link,
+        body.retro-mode .skill {
+            background: rgba(20, 0, 40, 0.85) !important;
+            border-color: rgba(255, 0, 128, 0.4) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        body.retro-mode .project-card:hover,
+        body.retro-mode .currently-card:hover {
+            border-color: #00d4ff !important;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3) !important;
+        }
+
+        body.retro-mode .skill:hover {
+            border-color: #a855f7 !important;
+            color: #a855f7 !important;
+            text-shadow: 0 0 10px #a855f7;
+        }
+
+        body.retro-mode .faq-item.active,
+        body.retro-mode .faq-item:hover {
+            border-color: #ff0080 !important;
+        }
+
+        body.retro-mode .faq-icon {
+            color: #ff0080 !important;
+        }
+
+        body.retro-mode .social-link:hover {
+            border-color: #00d4ff !important;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3) !important;
+        }
+
+        body.retro-mode .social-link svg {
+            fill: #00d4ff !important;
+        }
+
+        body.retro-mode .footer {
+            border-color: rgba(255, 0, 128, 0.3) !important;
+        }
+
+        body.retro-mode .footer-text a {
+            color: #ff0080 !important;
+        }
+
+        body.retro-mode .retro-toggle {
+            background: rgba(255, 0, 128, 0.1) !important;
+            border-color: #ff0080 !important;
+            color: #ff0080 !important;
+            font-family: 'Orbitron', sans-serif !important;
+        }
+
+        body.retro-mode::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
         @media (max-width: 600px) {
-            .container {
-                padding: 48px 20px;
-            }
-
-            .name {
-                font-size: 28px;
-            }
-
-            .title {
-                font-size: 16px;
-            }
-
-            .social-links {
+            .container { padding: 48px 20px; }
+            .name { font-size: 28px; }
+            .title { font-size: 16px; }
+            .social-links { flex-direction: column; }
+            .social-link { justify-content: center; }
+            .currently-card {
                 flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
-
-            .social-link {
-                justify-content: center;
-            }
+            .currently-image { width: 150px; }
         }
     </style>
 </head>
 <body>
 
+    <canvas id="starsCanvas"></canvas>
+    <canvas id="retroCanvas"></canvas>
+
     <div class="container">
         
-        <!-- Hero Section -->
         <header class="hero fade-in">
-            <img 
-                src="https://avatars.githubusercontent.com/u/234505253?v=4" 
-                alt="Jonathan Gabriel" 
-                class="avatar"
-            >
+            <img src="https://avatars.githubusercontent.com/u/234505253?v=4" alt="Jonathan Gabriel" class="avatar">
             
             <div class="status">
                 <span class="status-dot"></span>
-                Disponível para projetos
+                Vivendo, Estudando, Traduzindo e Tudo Mais!
             </div>
             
             <h1 class="name">Jonathan Gabriel</h1>
-            
-            <p class="title">Desenvolvedor & <span>Tradutor de Jogos</span></p>
+            <p class="title">Modder & <span>Tradutor de Jogos</span></p>
             
             <p class="location">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                 Brasil
             </p>
             
             <p class="bio">
-                Apaixonado por jogos retro e modificações. Criador de traduções PT-BR para fangames, tornando jogos mais acessíveis para a comunidade brasileira.
+                Gosto Muito de jogos retro e modificações. Criador de traduções PT-BR para fangames, tornando jogos mais acessíveis para a comunidade brasileira.
             </p>
         </header>
 
-        <!-- Projects Section -->
+        <section class="section fade-in">
+            <h2 class="section-title">Atualmente</h2>
+            <div class="currently-card">
+                <img src="https://static.wikia.nocookie.net/animeverso/images/f/f2/Gogeta_by_nekoar_dctaypx-fullview.png/revision/latest?cb=20211201154020&path-prefix=pt-br" alt="Atualmente" class="currently-image">
+                <div class="currently-info">
+                    <span class="currently-label">🎮 Sobre Mim</span>
+                    <p class="currently-text">Atualmente eu estou no Setimo Ano, vivendo minha vida normalmente. Tenho ainda 12 anos de Idade, irei fazer 13 anos ainda. Como eu sou bem novo ainda, Eu não posso fazer muitas coisas. Gosto de me divertir e Fazer meio que "Tutoriais" de algumas coisas. Eu espero que Você e eu Estejamos bem!</p>
+                </div>
+            </div>
+        </section>
+
         <section class="section fade-in">
             <h2 class="section-title">Projetos</h2>
-            
             <div class="projects">
                 <a href="https://jonathangabr.github.io/iwbtgr-br/" class="project-card" target="_blank">
                     <div class="project-icon">🍒</div>
@@ -399,62 +666,428 @@
                     </div>
                     <span class="project-arrow">→</span>
                 </a>
-                
-                <a href="#" class="project-card">
+                <a class="project-card">
                     <div class="project-icon">🎮</div>
                     <div class="project-info">
                         <div class="project-name">Em Breve</div>
-                        <div class="project-desc">Mais traduções e projetos em desenvolvimento</div>
+                        <div class="project-desc">Em Breve Haverá projetos ou Atualizações dessa Pagina</div>
                     </div>
-                    <span class="project-arrow">→</span>
                 </a>
             </div>
         </section>
 
-        <!-- Skills Section -->
         <section class="section fade-in">
-            <h2 class="section-title">Habilidades</h2>
-            
+            <h2 class="section-title">Coisas Prediletas</h2>
             <div class="skills">
                 <span class="skill">Game Maker</span>
                 <span class="skill">Tradução</span>
-                <span class="skill">HTML/CSS</span>
-                <span class="skill">JavaScript</span>
+                <span class="skill">Jogos Dificeis</span>
+                <span class="skill">Estudar em Paz</span>
                 <span class="skill">Modding</span>
-                <span class="skill">Pixel Art</span>
+                <span class="skill">Viver</span>
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <section class="section fade-in">
+            <h2 class="section-title">Perguntas</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Oque você mais gosta num Ambiente?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="faq-answer-content">Um Silencio tão bom, Que eu Consiga me Concentrar naquilo que Estou fazendo.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Qual é sua sexualidade?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="faq-answer-content">Sou hétero. Ou seja, Sinto apenas atração pelo Sexo (Como eu ainda sou uma Criança, Eu não penso em Namorar. Quando eu estiver mais Velho eu penso)</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Por que você traduz jogos?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="faq-answer-content">Porque eu gostom aprendo e acho que é um bom passa tempo. e Também para algumas pessoas que querem entender o jogo em PTBR. como a Modificação que fizeram em Undertale.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Como eu Irei conseguir falar com Você???</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="faq-answer-content">Há Duas alternativas de Falar comigo, Primeira, Youtube. eu sempre olho as notificações. Segunda, Gmail. Também olho diariamente  meu Gmail</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section fade-in">
             <h2 class="section-title">Contato</h2>
-            
             <div class="social-links">
                 <a href="https://github.com/JONATHANGABR" class="social-link" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     GitHub
                 </a>
-                
                 <a href="https://www.youtube.com/@jonathangabriel1553" class="social-link" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
                     YouTube
                 </a>
-                
                 <a href="mailto:jonathangabriel08.2013@gmail.com" class="social-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                     Email
                 </a>
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="footer fade-in">
-            <p class="footer-text">
-                © 2025 Jonathan Gabriel — Feito com ☕ no Brasil
-            </p>
+            <p class="footer-text">© 2025 <a href="#">Jonathan Gabriel</a> — Feito com ☕ no Brasil</p>
+            <button class="retro-toggle" id="retroToggleBtn" onclick="toggleRetroMode()">🌆 Modo Retro</button>
         </footer>
 
     </div>
+
+    <script>
+        const starsCanvas = document.getElementById('starsCanvas');
+        const starsCtx = starsCanvas.getContext('2d');
+        let stars = [];
+
+        function initStars() {
+            starsCanvas.width = window.innerWidth;
+            starsCanvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < 150; i++) {
+                stars.push({
+                    x: Math.random() * starsCanvas.width,
+                    y: Math.random() * starsCanvas.height,
+                    radius: Math.random() * 1.5 + 0.5,
+                    alpha: Math.random(),
+                    alphaChange: (Math.random() - 0.5) * 0.02
+                });
+            }
+        }
+
+        function drawStars() {
+            starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+            stars.forEach(star => {
+                star.alpha += star.alphaChange;
+                if (star.alpha <= 0.1 || star.alpha >= 1) star.alphaChange *= -1;
+                starsCtx.beginPath();
+                starsCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                starsCtx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                starsCtx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        initStars();
+        drawStars();
+
+        const retroCanvas = document.getElementById('retroCanvas');
+			const retroCtx = retroCanvas.getContext('2d');
+			let gridOffset = 0;
+			let sunLineOffset = 0;  // NOVA VARIÁVEL
+			let retroAnimationId;
+
+        function initRetro() {
+            retroCanvas.width = window.innerWidth;
+            retroCanvas.height = window.innerHeight;
+        }
+
+        function drawSynthwave() {
+    const w = retroCanvas.width;
+    const h = retroCanvas.height;
+    const horizon = h * 0.55;
+
+    retroCtx.clearRect(0, 0, w, h);
+
+    // CÉU
+    const skyGradient = retroCtx.createLinearGradient(0, 0, 0, horizon);
+    skyGradient.addColorStop(0, '#0f051d');
+    skyGradient.addColorStop(0.3, '#1a0a3e');
+    skyGradient.addColorStop(0.5, '#3d1155');
+    skyGradient.addColorStop(0.7, '#6b2a6e');
+    skyGradient.addColorStop(1, '#c44b8e');
+    retroCtx.fillStyle = skyGradient;
+    retroCtx.fillRect(0, 0, w, horizon);
+
+    // ESTRELAS
+    retroCtx.fillStyle = 'white';
+    for (let i = 0; i < 80; i++) {
+        const x = (i * 137.5) % w;
+        const y = (i * 97.3) % (horizon * 0.6);
+        const size = (i % 3) * 0.5 + 0.5;
+        retroCtx.globalAlpha = 0.3 + Math.sin(Date.now() * 0.001 + i) * 0.2;
+        retroCtx.beginPath();
+        retroCtx.arc(x, y, size, 0, Math.PI * 2);
+        retroCtx.fill();
+    }
+    retroCtx.globalAlpha = 1;
+
+    // MONTANHAS (ANTES DO SOL)
+    retroCtx.fillStyle = '#1a0a3e';
+    retroCtx.beginPath();
+    retroCtx.moveTo(-10, horizon);
+    const farPeaks = [];
+    for (let i = 0; i <= 20; i++) {
+        farPeaks.push({
+            x: (i / 20) * (w + 20) - 10,
+            h: 60 + Math.sin(i * 0.8) * 40 + Math.cos(i * 1.3) * 30
+        });
+    }
+    farPeaks.forEach((peak, i) => {
+        if (i === 0) {
+            retroCtx.lineTo(peak.x, horizon - peak.h);
+        } else {
+            const prev = farPeaks[i - 1];
+            const midX = (prev.x + peak.x) / 2;
+            const midH = Math.min(prev.h, peak.h) * 0.7;
+            retroCtx.lineTo(midX, horizon - midH);
+            retroCtx.lineTo(peak.x, horizon - peak.h);
+        }
+    });
+    retroCtx.lineTo(w + 10, horizon);
+    retroCtx.closePath();
+    retroCtx.fill();
+
+    retroCtx.fillStyle = '#2d1b4e';
+    retroCtx.beginPath();
+    retroCtx.moveTo(-10, horizon);
+    const midPeaks = [];
+    for (let i = 0; i <= 12; i++) {
+        midPeaks.push({
+            x: (i / 12) * (w + 20) - 10,
+            h: 35 + Math.sin(i * 1.2) * 25 + Math.cos(i * 0.9) * 20
+        });
+    }
+    midPeaks.forEach((peak, i) => {
+        if (i === 0) {
+            retroCtx.lineTo(peak.x, horizon - peak.h);
+        } else {
+            const prev = midPeaks[i - 1];
+            const midX = (prev.x + peak.x) / 2;
+            const midH = Math.min(prev.h, peak.h) * 0.6;
+            retroCtx.lineTo(midX, horizon - midH);
+            retroCtx.lineTo(peak.x, horizon - peak.h);
+        }
+    });
+    retroCtx.lineTo(w + 10, horizon);
+    retroCtx.closePath();
+    retroCtx.fill();
+
+    retroCtx.fillStyle = '#4a2a6e';
+    retroCtx.beginPath();
+    retroCtx.moveTo(-10, horizon);
+    const nearPeaks = [
+        { x: -10, h: 15 },
+        { x: w * 0.2, h: 30 },
+        { x: w * 0.4, h: 20 },
+        { x: w * 0.6, h: 35 },
+        { x: w * 0.8, h: 25 },
+        { x: w + 10, h: 18 }
+    ];
+    nearPeaks.forEach((peak, i) => {
+        if (i === 0) {
+            retroCtx.lineTo(peak.x, horizon - peak.h);
+        } else {
+            const prev = nearPeaks[i - 1];
+            const midX = (prev.x + peak.x) / 2;
+            const midH = Math.min(prev.h, peak.h) * 0.5;
+            retroCtx.lineTo(midX, horizon - midH);
+            retroCtx.lineTo(peak.x, horizon - peak.h);
+        }
+    });
+    retroCtx.lineTo(w + 10, horizon);
+    retroCtx.closePath();
+    retroCtx.fill();
+
+    // SOL (NA FRENTE DAS MONTANHAS)
+    const sunX = w / 2;
+    const sunRadius = Math.min(w, h) * 0.12;
+    const sunY = horizon - sunRadius * 0.2;
+
+    // Glow
+    const glowGradient = retroCtx.createRadialGradient(sunX, sunY, sunRadius * 0.5, sunX, sunY, sunRadius * 3);
+    glowGradient.addColorStop(0, 'rgba(255, 200, 50, 0.4)');
+    glowGradient.addColorStop(0.3, 'rgba(255, 100, 50, 0.2)');
+    glowGradient.addColorStop(0.6, 'rgba(255, 50, 100, 0.1)');
+    glowGradient.addColorStop(1, 'rgba(255, 0, 128, 0)');
+    retroCtx.fillStyle = glowGradient;
+    retroCtx.beginPath();
+    retroCtx.arc(sunX, sunY, sunRadius * 3, 0, Math.PI * 2);
+    retroCtx.fill();
+
+    // Sol
+    const sunGradient = retroCtx.createLinearGradient(sunX, sunY - sunRadius, sunX, sunY + sunRadius);
+    sunGradient.addColorStop(0, '#fff200');
+    sunGradient.addColorStop(0.2, '#ffcc00');
+    sunGradient.addColorStop(0.4, '#ff9900');
+    sunGradient.addColorStop(0.6, '#ff6600');
+    sunGradient.addColorStop(0.8, '#ff3366');
+    sunGradient.addColorStop(1, '#cc0066');
+    retroCtx.beginPath();
+    retroCtx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+    retroCtx.fillStyle = sunGradient;
+    retroCtx.fill();
+
+    // LINHAS ANIMADAS NO SOL
+    retroCtx.save();
+    retroCtx.beginPath();
+    retroCtx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+    retroCtx.clip();
+    retroCtx.fillStyle = '#1a0a3e';
+
+    const numSunLines = 12;
+    for (let i = 0; i < numSunLines; i++) {
+        const basePos = (i / numSunLines + sunLineOffset) % 1;
+        const lineY = sunY + sunRadius - (basePos * sunRadius * 2);
+        const progress = 1 - basePos;
+        const lineHeight = 2 + progress * 10;
+
+        if (lineY > sunY - sunRadius && lineY < sunY + sunRadius) {
+            const distFromCenter = Math.abs(lineY - sunY);
+            const halfWidth = Math.sqrt(Math.max(0, sunRadius * sunRadius - distFromCenter * distFromCenter));
+            if (halfWidth > 0) {
+                const fadeProgress = (lineY - (sunY - sunRadius)) / (sunRadius * 2);
+                retroCtx.globalAlpha = Math.min(1, fadeProgress * 2);
+                retroCtx.fillRect(sunX - halfWidth, lineY, halfWidth * 2, lineHeight);
+            }
+        }
+    }
+    retroCtx.globalAlpha = 1;
+    retroCtx.restore();
+
+    // CHÃO
+    const groundGradient = retroCtx.createLinearGradient(0, horizon, 0, h);
+    groundGradient.addColorStop(0, '#2d1b4e');
+    groundGradient.addColorStop(0.2, '#1a0a3e');
+    groundGradient.addColorStop(0.5, '#0f051d');
+    groundGradient.addColorStop(1, '#050208');
+    retroCtx.fillStyle = groundGradient;
+    retroCtx.fillRect(0, horizon, w, h - horizon);
+
+    // GRID
+    const numVertLines = 35;
+    const centerX = w / 2;
+    for (let i = -numVertLines / 2; i <= numVertLines / 2; i++) {
+        const startX = centerX + i * 15;
+        const endX = centerX + i * (w * 0.8);
+        const alpha = 1 - Math.abs(i) / (numVertLines / 2) * 0.9;
+        retroCtx.strokeStyle = `rgba(255, 0, 255, ${alpha * 0.5})`;
+        retroCtx.lineWidth = 1;
+        retroCtx.beginPath();
+        retroCtx.moveTo(startX, horizon);
+        retroCtx.lineTo(endX, h + 50);
+        retroCtx.stroke();
+    }
+
+    const numHorizLines = 20;
+    const maxDist = h - horizon;
+    for (let i = 0; i < numHorizLines; i++) {
+        const baseT = (i / numHorizLines + gridOffset) % 1;
+        const y = horizon + maxDist * (baseT * baseT);
+        if (y > horizon && y < h) {
+            const alpha = (y - horizon) / maxDist;
+            retroCtx.strokeStyle = `rgba(255, 0, 255, ${0.2 + alpha * 0.6})`;
+            retroCtx.lineWidth = 0.5 + alpha * 2.5;
+            retroCtx.beginPath();
+            retroCtx.moveTo(0, y);
+            retroCtx.lineTo(w, y);
+            retroCtx.stroke();
+        }
+    }
+
+    retroCtx.strokeStyle = '#ff00ff';
+    retroCtx.lineWidth = 2;
+    retroCtx.shadowColor = '#ff00ff';
+    retroCtx.shadowBlur = 15;
+    retroCtx.beginPath();
+    retroCtx.moveTo(0, horizon);
+    retroCtx.lineTo(w, horizon);
+    retroCtx.stroke();
+    retroCtx.shadowBlur = 0;
+
+    // ATUALIZA ANIMAÇÕES
+    gridOffset += 0.008;
+    if (gridOffset >= 1) gridOffset = 0;
+    
+    sunLineOffset += 0.005;
+    if (sunLineOffset >= 1) sunLineOffset = 0;
+
+    retroAnimationId = requestAnimationFrame(drawSynthwave);
+}
+
+        // FAQ
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
+
+        // MODO RETRO
+        let retroMode = false;
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let typedText = '';
+
+        function toggleRetroMode() {
+            retroMode = !retroMode;
+            const btn = document.getElementById('retroToggleBtn');
+            if (retroMode) {
+                document.body.classList.add('retro-mode');
+                btn.textContent = '✨ Modo Normal';
+                initRetro();
+                drawSynthwave();
+            } else {
+                document.body.classList.remove('retro-mode');
+                btn.textContent = '🌆 Modo Retro';
+                if (retroAnimationId) cancelAnimationFrame(retroAnimationId);
+                retroCtx.clearRect(0, 0, retroCanvas.width, retroCanvas.height);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && retroMode) {
+                toggleRetroMode();
+                return;
+            }
+            konamiCode.push(e.key);
+            if (konamiCode.length > konamiSequence.length) konamiCode.shift();
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+                toggleRetroMode();
+                konamiCode = [];
+            }
+            typedText += e.key.toLowerCase();
+            if (typedText.includes('retro')) {
+                toggleRetroMode();
+                typedText = '';
+            }
+            setTimeout(() => { typedText = ''; }, 2000);
+        });
+
+        window.addEventListener('resize', function() {
+            initStars();
+            if (retroMode) initRetro();
+        });
+
+        console.log('%c⭐ Site por Jonathan Gabriel', 'font-size: 16px; color: #3b82f6;');
+        console.log('%c🌆 Digite "retro" para o Easter Egg!', 'color: #ff0080;');
+    </script>
+
+</body>
+</html>
+	</script>
 
 </body>
 </html>
